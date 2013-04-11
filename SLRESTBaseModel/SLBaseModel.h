@@ -65,6 +65,7 @@ void SLBaseModel<T>::updateWithJSONObject(const QVariant& JSONObject) {
 		++i;
 	}
 }
+
 template <class T>
 T SLBaseModel<T>::UpdatedObjectWithJSONObject(const QVariant& JSONObject)
 {
