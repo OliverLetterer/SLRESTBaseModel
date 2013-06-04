@@ -53,7 +53,7 @@ void SLBaseModel<T>::updateWithJSONObject(const QVariant& JSONObject) {
 		const char *propertyName = array.data();
 
 //		qDebug() << "assining " << value << " for " << propertyName;
-		if (dateKeys.contains(propertyName)) {
+		if (dateKeys.contains(propertyName) && !value.isNull()) {
 			QDateTime dateTime = QDateTime::fromString(value.toString(), Qt::ISODate);
 			bool success = this->metaInfo()->setValue(this, propertyName, dateTime);
 			Q_ASSERT(success);
