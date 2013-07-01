@@ -87,14 +87,15 @@ QList<T> SLBaseModel<T>::ParseJSON(const QVariant& JSONObject)
 	QList<T> result;
 
 	QList<QVariant> listOfJSONObjects = JSONObject.toList();
-	if (listOfJSONObjects.count() > 0) {
+
+	if (!listOfJSONObjects.empty()) {
 		// is a list of JSON objects
 		QList<QVariant>::Iterator i = listOfJSONObjects.begin();
 		while (i != listOfJSONObjects.end()) {
 			result << UpdatedObjectWithJSONObject(*i);
 			++i;
 		}
-	} else {
+	} else if (!JSONObject.toMap().empty()) {
 		// try to parse single JSON object
 		result << UpdatedObjectWithJSONObject(JSONObject);
 	}
