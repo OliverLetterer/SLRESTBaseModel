@@ -21,7 +21,7 @@ public:
 	virtual ~SLBaseModel() {};
 
 	virtual QMap<QString, QString> attributeMapping(void) =0;
-	void updateWithJSONObject(const QVariant& JSONObject);
+	virtual void updateWithJSONObject(const QVariant& JSONObject);
 	static T UpdatedObjectWithJSONObject(const QVariant& JSONObject);
 	static QList<T> ParseJSON(const QVariant& JSONObject);
 	QVariantMap toVariant(void);
@@ -121,20 +121,17 @@ template <class T>
 QList<T> SLBaseModel<T>::Find(void)
 {
 	QList<T> result;
-	T *dummy = new T();
-	_DQMetaInfoQuery query(dummy->metaInfo(), dummy->connection());
+	DQQuery<T> query;
 
 	if (query.exec()) {
 		while (query.next()) {
 			T object;
-			if (query.recordTo(&object)) {
+			if (query.recordTo(object)) {
 				result.append(object);
 			}
 		}
 	}
 
-	dummy->connection().setLastQuery(query.lastQuery());
-	delete dummy;
     return result;
 }
 
@@ -142,21 +139,18 @@ template <class T>
 QList<T> SLBaseModel<T>::Find(DQWhere where)
 {
 	QList<T> result;
-	T *dummy = new T();
-	_DQMetaInfoQuery query(dummy->metaInfo(), dummy->connection());
+	DQQuery<T> query;
 
 	query = query.filter(where);
 	if (query.exec()) {
 		while (query.next()) {
 			T object;
-			if (query.recordTo(&object)) {
+			if (query.recordTo(object)) {
 				result.append(object);
 			}
 		}
 	}
 
-	dummy->connection().setLastQuery(query.lastQuery());
-	delete dummy;
     return result;
 }
 
